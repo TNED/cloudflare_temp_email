@@ -50,33 +50,40 @@ const clearMails = async () => {
 
 <template>
     <div style="margin-top: 10px;">
-        <n-space align="center">
-            <n-input-group class="mail-query-group">
-                <n-input v-model:value="adminMailTabAddress" :placeholder="t('addressQueryTip')"
-                    @keydown.enter="queryMail" clearable />
-                <n-button @click="queryMail" type="primary" tertiary>
-                    {{ t('query') }}
-                </n-button>
-            </n-input-group>
-            <n-popconfirm @positive-click="clearMails">
-                <template #trigger>
-                    <n-button type="error" tertiary :loading="loading">
-                        <template #icon>
-                            <n-icon :component="DeleteFilled" />
-                        </template>
-                        {{ adminMailTabAddress ? t('clearAddressMails') : t('clearAllMails') }}
-                    </n-button>
-                </template>
-                {{ adminMailTabAddress ? t('clearAddressMailsTip', { address: adminMailTabAddress }) : t('clearAllMailsTip') }}
-            </n-popconfirm>
-        </n-space>
-        <div style="margin-top: 10px;"></div>
         <MailBox :key="mailBoxKey" :enableUserDeleteEmail="true" :fetchMailData="fetchMailData"
-            :deleteMail="deleteMail" :showFilterInput="true" />
+            :deleteMail="deleteMail" :showFilterInput="true">
+            <template #desktop-toolbar-right>
+                <n-space class="mail-query-toolbar" align="center" :wrap="false">
+                    <n-input-group class="mail-query-group">
+                        <n-input v-model:value="adminMailTabAddress" :placeholder="t('addressQueryTip')"
+                            @keydown.enter="queryMail" clearable />
+                        <n-button @click="queryMail" type="primary" tertiary>
+                            {{ t('query') }}
+                        </n-button>
+                    </n-input-group>
+                    <n-popconfirm @positive-click="clearMails">
+                        <template #trigger>
+                            <n-button type="error" tertiary :loading="loading">
+                                <template #icon>
+                                    <n-icon :component="DeleteFilled" />
+                                </template>
+                                {{ adminMailTabAddress ? t('clearAddressMails') : t('clearAllMails') }}
+                            </n-button>
+                        </template>
+                        {{ adminMailTabAddress ? t('clearAddressMailsTip', { address: adminMailTabAddress }) : t('clearAllMailsTip') }}
+                    </n-popconfirm>
+                </n-space>
+            </template>
+        </MailBox>
     </div>
 </template>
 
 <style scoped>
+.mail-query-toolbar {
+    width: 100%;
+    justify-content: flex-end;
+}
+
 .mail-query-group {
     flex: 1 1 420px;
     max-width: 720px;
