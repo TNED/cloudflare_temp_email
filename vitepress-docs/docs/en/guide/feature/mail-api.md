@@ -45,6 +45,8 @@ response = requests.get(url, headers=headers, params=querystring)
 print(response.json())
 ```
 
+Results may include `original_recipient`, an inferred original/pre-forwarding recipient from trusted mail headers or forwarding traces. It is empty when no reliable value can be inferred. `address` still means the mailbox address actually delivered to the Worker.
+
 **Note**: `/admin/mails` follows the same design as `/api/mails`: it returns stored raw MIME data. If you need readable subject/body, parse the raw content on the client side.
 
 **Note**: Keyword filtering has been removed from the backend API. If you need to filter emails by content, please use the frontend filter input in the UI, which filters the currently displayed page.
@@ -65,6 +67,28 @@ headers = {
     }
 
 response = requests.delete(url, headers=headers)
+
+print(response.json())
+```
+
+## Admin Clear Mails API
+
+Clear all received mails. Add the optional `address` query parameter to clear only one address.
+
+```python
+import requests
+
+url = "https://<your-worker-address>/admin/mails"
+
+headers = {
+        "x-admin-auth": "<your-Admin-password>",
+        # "x-custom-auth": "<your-website-password>", # If private site password is enabled
+    }
+
+response = requests.delete(url, headers=headers)
+
+# Or clear only one address:
+# response = requests.delete(url, headers=headers, params={"address": "xxxx@awsl.uk"})
 
 print(response.json())
 ```

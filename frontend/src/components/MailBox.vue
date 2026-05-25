@@ -329,8 +329,8 @@ onBeforeUnmount(() => {
 <template>
   <div>
     <div v-if="!isMobile" class="left">
-      <div style="margin-bottom: 10px;">
-        <n-space v-if="multiActionMode" align="center">
+      <div class="mailbox-toolbar">
+        <n-space v-if="multiActionMode" class="mailbox-toolbar-actions" align="center">
           <n-button @click="multiActionModeClick(false)" tertiary>
             {{ t('cancelMultiAction') }}
           </n-button>
@@ -353,7 +353,7 @@ onBeforeUnmount(() => {
             {{ t('downloadMail') }}
           </n-button>
         </n-space>
-        <n-space v-else align="center">
+        <n-space v-else class="mailbox-toolbar-actions" align="center">
           <n-button @click="multiActionModeClick(true)" type="primary" tertiary>
             {{ t('multiAction') }}
           </n-button>
@@ -374,6 +374,9 @@ onBeforeUnmount(() => {
             :placeholder="t('keywordQueryTip')" style="width: 200px; display: flex; align-items: center;"
             clearable />
         </n-space>
+        <div v-if="$slots['desktop-toolbar-right']" class="mailbox-toolbar-right">
+          <slot name="desktop-toolbar-right" />
+        </div>
       </div>
       <n-split class="left" direction="horizontal" :max="0.75" :min="0.25" :default-size="mailboxSplitSize"
         :on-update:size="onSpiltSizeChange">
@@ -553,6 +556,24 @@ onBeforeUnmount(() => {
 
 .mail-item {
   height: 100%;
+}
+
+.mailbox-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.mailbox-toolbar-actions {
+  flex: 0 0 auto;
+}
+
+.mailbox-toolbar-right {
+  flex: 0 1 760px;
+  min-width: 320px;
+  margin-left: auto;
 }
 
 pre {
